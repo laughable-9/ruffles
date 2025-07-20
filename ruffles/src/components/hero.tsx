@@ -37,7 +37,14 @@ export function Hero() {
                 onClick={() => {
                   const liveRafflesSection = document.querySelector('[data-section="live-raffles"]');
                   if (liveRafflesSection) {
-                    liveRafflesSection.scrollIntoView({ behavior: 'smooth' });
+                    const headerHeight = 80; // Approximate header height
+                    const elementPosition = liveRafflesSection.getBoundingClientRect().top + window.pageYOffset;
+                    const offsetPosition = elementPosition - headerHeight;
+                    
+                    window.scrollTo({
+                      top: offsetPosition,
+                      behavior: 'smooth'
+                    });
                   }
                 }}
               >
