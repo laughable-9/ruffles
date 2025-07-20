@@ -53,29 +53,6 @@ Perfect for hard-to-price assets like digital art and unique NFTs.
 - Automatic refunds for outbid participants
 - 3% platform fee, 97% to sellers
 
-### 🎁 Giveaways
-
-Trustless community campaigns that run themselves.
-
-**Capabilities:**
-
-- Automated eligibility checking
-- Social media integration
-- On-chain winner verification
-- Direct launchpad whitelist integration
-- Anti-bot protection
-
-### 📦 Treat Boxes
-
-Loot box mechanics bringing excitement to prize opening.
-
-**Features:**
-
-- Published odds transparency
-- Verifiable random prize selection
-- Box Battles (PvP opening)
-- Custom box creation for projects
-
 ## 🛠️ Tech Stack
 
 - **Frontend**: Next.js 14 with App Router
@@ -84,21 +61,6 @@ Loot box mechanics bringing excitement to prize opening.
 - **Blockchain**: Aptos
 - **Smart Contracts**: Move language
 - **Randomness**: Verifiable Random Functions (VRF)
-
-## 🏗️ Project Structure
-
-```
-ruffles/
-├── src/
-│   ├── components/          # Reusable UI components
-│   │   ├── main-raffles.tsx # Main raffles grid with pagination
-│   │   ├── live-raffles.tsx # Live raffles carousel
-│   │   └── raffle-card.tsx  # Reusable raffle card component
-│   ├── pages/              # Next.js pages
-│   └── styles/             # Global styles
-├── public/                 # Static assets
-└── contracts/             # Move smart contracts (coming soon)
-```
 
 ## 🎮 User Experience
 
