@@ -16,12 +16,12 @@ export function GuiInuMascot() {
       <div className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-cyan-400 rounded-full blur-xl opacity-30 scale-75" />
 
       {/* Logo Container */}
-      <div className="relative w-96 h-96 flex items-center justify-center">
+      <div className="relative w-[30rem] h-[30rem] flex items-center justify-center">
         <Image
           src="/logo.png"
           alt="Ruffles Logo"
-          width={400}
-          height={400}
+          width={512}
+          height={512}
           className="drop-shadow-2xl filter brightness-110 contrast-110 rotate-12"
           priority
         />

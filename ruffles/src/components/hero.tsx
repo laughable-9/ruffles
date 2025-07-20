@@ -1,7 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { Sparkles, Zap } from "lucide-react"
+import { Ticket } from "lucide-react"
 import { GuiInuMascot } from "./gui-inu-mascot"
 
 export function Hero() {
@@ -17,38 +17,32 @@ export function Hero() {
           {/* Left Content */}
           <div className="space-y-8">
             <div className="space-y-4">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-yellow-500/20 to-cyan-500/20 border border-yellow-500/30">
-                <Sparkles className="w-4 h-4 text-yellow-400" />
-                <span className="text-sm font-medium text-yellow-400">Powered by Aptos Blockchain</span>
-              </div>
 
               <h1 className="text-5xl lg:text-7xl font-bold leading-tight">
-                <span className="bg-gradient-to-r from-yellow-400 via-cyan-400 to-green-400 bg-clip-text text-transparent">
-                  Trustless Raffles.
+                <span className="bg-gradient-to-r from-yellow-400 via-cyan-400 to-green-400 bg-clip-text text-transparent text-5xl lg:text-7xl">
+                  Aptos raffles, made easy.
                 </span>
-                <br />
-                <span className="text-white">Instant Luck.</span>
               </h1>
 
-              <p className="text-xl text-slate-300 max-w-lg">
-                On-Chain Raffles & Giveaways, Powered by <span className="text-yellow-400 font-semibold">$GUI</span>.
+              <p className="text-xl lg:text-3xl text-slate-300 max-w-lg mt-4">
+                On-chain Raffles, powered by <span className="text-yellow-400 font-semibold">$GUI</span>.
               </p>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex justify-start">
               <Button
                 size="lg"
-                className="bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-slate-900 font-semibold px-8 py-6 text-lg rounded-xl shadow-lg hover:shadow-yellow-500/25 transition-all duration-300"
-              >
-                <Zap className="w-5 h-5 mr-2" />
-                Start Raffle
-              </Button>
-              <Button
                 variant="outline"
-                size="lg"
-                className="border-2 border-cyan-500 text-cyan-400 hover:bg-cyan-500/10 px-8 py-6 text-lg rounded-xl font-semibold transition-all duration-300 bg-transparent"
+                className="border-2 border-yellow-400 text-yellow-400 font-semibold px-8 py-6 text-lg rounded-xl shadow-lg hover:bg-yellow-400/10 hover:shadow-yellow-500/50 hover:ring-2 hover:ring-yellow-400/50 transition-all duration-300 bg-transparent hover:text-yellow-400 focus:text-yellow-400 active:text-yellow-400"
+                onClick={() => {
+                  const liveRafflesSection = document.querySelector('[data-section="live-raffles"]');
+                  if (liveRafflesSection) {
+                    liveRafflesSection.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }}
               >
-                Browse Live Draws
+                <Ticket className="w-5 h-5 mr-2 text-yellow-400 group-hover:text-yellow-400 group-focus:text-yellow-400 group-active:text-yellow-400" />
+                Start Winning
               </Button>
             </div>
           </div>

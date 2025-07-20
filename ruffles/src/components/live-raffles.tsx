@@ -35,7 +35,7 @@ const raffles = [
 
 export function LiveRaffles() {
   return (
-    <section className="py-20 px-4">
+    <section className="py-20 px-4" data-section="live-raffles">
       <div className="container mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold text-white mb-4">Live Raffles</h2>
