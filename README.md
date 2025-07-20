@@ -12,11 +12,13 @@
 ### Why Raffles on Aptos?
 
 Raffles have become popular in Web3, but traditional platforms come with significant problems:
+
 - **Creators struggle** with logistics, chasing winners, and fighting impersonators
 - **Participants wait days** for transfers and question fairness
 - **Trust issues** drain community excitement
 
 **Ruffles fixes this on Aptos** with self-running raffles that are:
+
 - ✅ **Verifiably Fair** - Cryptographic proof anyone can audit
 - ⚡ **Instant Settlement** - Sub-second finality on Aptos
 - 🔒 **Trustless** - No custodians or middlemen
@@ -25,9 +27,11 @@ Raffles have become popular in Web3, but traditional platforms come with signifi
 ## 🚀 Key Features
 
 ### 🎯 Raffles
+
 Our flagship feature - a no-code way to create trustless raffles for NFTs or tokens.
 
 **How it works:**
+
 1. **Launch** - Creator sets prize, ticket price, and end time. Prize locks in on-chain vault
 2. **Sell** - Community buys tickets with $GUI or $APT
 3. **Draw** - Verifiable Random Function selects winner with public proof
@@ -38,9 +42,11 @@ Our flagship feature - a no-code way to create trustless raffles for NFTs or tok
 - Transparent, auditable draws
 
 ### 🔨 Auctions
+
 Perfect for hard-to-price assets like digital art and unique NFTs.
 
 **Features:**
+
 - Reserve price protection
 - Anti-snipe extensions
 - Real-time bidding
@@ -48,9 +54,11 @@ Perfect for hard-to-price assets like digital art and unique NFTs.
 - 3% platform fee, 97% to sellers
 
 ### 🎁 Giveaways
+
 Trustless community campaigns that run themselves.
 
 **Capabilities:**
+
 - Automated eligibility checking
 - Social media integration
 - On-chain winner verification
@@ -58,9 +66,11 @@ Trustless community campaigns that run themselves.
 - Anti-bot protection
 
 ### 📦 Treat Boxes
+
 Loot box mechanics bringing excitement to prize opening.
 
 **Features:**
+
 - Published odds transparency
 - Verifiable random prize selection
 - Box Battles (PvP opening)
@@ -93,6 +103,7 @@ ruffles/
 ## 🎮 User Experience
 
 ### For Creators
+
 - **No-code raffle creation**
 - **Automated prize custody**
 - **90% revenue share**
@@ -100,6 +111,7 @@ ruffles/
 - **Community page customization**
 
 ### For Participants
+
 - **Transparent odds**
 - **Instant ticket purchases**
 - **Verifiable fairness**
@@ -108,12 +120,12 @@ ruffles/
 
 ## 💰 Revenue Model
 
-| Service | Fee | Revenue Distribution |
-|---------|-----|---------------------|
-| Raffles | 10% | 90% to creator, portion burned |
-| Auctions | 3% | 97% to seller |
-| Giveaways | Tiered subscription | $100 USDC/month for Pro |
-| Treat Boxes | Variable | Based on box type |
+| Service     | Fee                 | Revenue Distribution           |
+| ----------- | ------------------- | ------------------------------ |
+| Raffles     | 10%                 | 90% to creator, portion burned |
+| Auctions    | 3%                  | 97% to seller                  |
+| Giveaways   | Tiered subscription | $100 USDC/month for Pro        |
+| Treat Boxes | Variable            | Based on box type              |
 
 ## 🔮 Upcoming Features
 
@@ -126,6 +138,7 @@ ruffles/
 ## 🚀 Getting Started
 
 ### Prerequisites
+
 - Node.js 18+
 - Aptos Wallet
 - $APT or $GUI tokens
@@ -153,6 +166,7 @@ Visit `http://localhost:3000` to see the application.
 We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
 
 ### Development Workflow
+
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
@@ -165,10 +179,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🔗 Links
 
-- **Website**: [ruffles.app](https://ruffles.app) *(coming soon)*
-- **Documentation**: [docs.ruffles.app](https://docs.ruffles.app) *(coming soon)*
-- **Twitter**: [@RufflesOnAptos](https://twitter.com/RufflesOnAptos) *(coming soon)*
-- **Discord**: [Join our community](https://discord.gg/ruffles) *(coming soon)*
+- **Website**: [ruffles.app](https://ruffles.app) _(coming soon)_
+- **Documentation**: [docs.ruffles.app](https://docs.ruffles.app) _(coming soon)_
+- **Twitter**: [@RufflesOnAptos](https://twitter.com/RufflesOnAptos) _(coming soon)_
+- **Discord**: [Join our community](https://discord.gg/ruffles) _(coming soon)_
 
 ## 🙏 Acknowledgments
 
