@@ -17,6 +17,7 @@ interface RaffleData {
   usdPrice: string
   endTime?: number
   owner: string
+  status?: "active" | "ended"
 }
 
 interface RaffleCardProps {
@@ -26,6 +27,7 @@ interface RaffleCardProps {
   onQuantityChange?: (id: number, quantity: number) => void
   currentQuantity?: number
   timeRemaining?: number
+  currency?: "APT" | "GUI"
 }
 
 // Helper function to format time remaining
@@ -42,107 +44,129 @@ export function RaffleCard({
   variant = 'carousel',
   onQuantityChange,
   currentQuantity = 0,
-  timeRemaining
+  timeRemaining,
+  currency = "APT"
 }: RaffleCardProps) {
   const [localQuantity, setLocalQuantity] = useState(currentQuantity)
   
-  const remainingTickets = raffle.totalTickets - raffle.ticketsSold
-  const maxAllowed = Math.floor(raffle.totalTickets * 0.1) // 10% of total tickets
-  const actualMax = Math.min(maxAllowed, remainingTickets)
-  const canDecrease = localQuantity > 0
-  const canIncrease = localQuantity < actualMax
-  
-  const updateQuantity = (change: number) => {
-    const newQuantity = localQuantity + change
-    const validQuantity = Math.max(0, Math.min(newQuantity, actualMax))
-    setLocalQuantity(validQuantity)
-    onQuantityChange?.(raffle.id, validQuantity)
+  const handleQuantityInput = (value: string) => {
+    const quantity = Math.max(0, parseInt(value) || 0)
+    const maxTickets = raffle.totalTickets - raffle.ticketsSold
+    const actualQuantity = Math.min(quantity, maxTickets)
+    setLocalQuantity(actualQuantity)
+    onQuantityChange?.(raffle.id, actualQuantity)
   }
 
-  const handleQuantityInput = (value: string) => {
-    const numValue = parseInt(value) || 0
-    const validQuantity = Math.max(0, Math.min(numValue, actualMax))
-    setLocalQuantity(validQuantity)
-    onQuantityChange?.(raffle.id, validQuantity)
+  const updateQuantity = (change: number) => {
+    const newQuantity = Math.max(0, localQuantity + change)
+    const maxTickets = raffle.totalTickets - raffle.ticketsSold
+    const actualQuantity = Math.min(newQuantity, maxTickets)
+    setLocalQuantity(actualQuantity)
+    onQuantityChange?.(raffle.id, actualQuantity)
   }
 
   const setMaxQuantity = () => {
-    setLocalQuantity(actualMax)
-    onQuantityChange?.(raffle.id, actualMax)
+    const maxTickets = raffle.totalTickets - raffle.ticketsSold
+    setLocalQuantity(maxTickets)
+    onQuantityChange?.(raffle.id, maxTickets)
   }
 
-  const displayTimeRemaining = timeRemaining !== undefined ? timeRemaining : 0
+  const calculateTotalPrice = (quantity: number) => {
+    const pricePerTicket = parseFloat(raffle.ticketPrice.replace(/[^0-9.]/g, ''))
+    const total = (pricePerTicket * quantity).toFixed(1)
+    const currencyType = raffle.ticketPrice.includes('GUI') ? 'GUI' : 'APT'
+    
+    if (currencyType === 'GUI') {
+      const totalNum = parseFloat(total)
+      if (totalNum >= 1000000) {
+        return `${(totalNum / 1000000).toFixed(1)}M GUI`
+      } else if (totalNum >= 1000) {
+        return `${(totalNum / 1000).toFixed(0)}K GUI`
+      }
+      return `${totalNum.toFixed(0)} GUI`
+    }
+    
+    return `${total} APT`
+  }
+
+  const availableTickets = raffle.totalTickets - raffle.ticketsSold
+  const actualMax = Math.min(availableTickets, 10)
+  const canIncrease = localQuantity < actualMax
+  const canDecrease = localQuantity > 0
+  const displayTimeRemaining = timeRemaining || 0
 
   return (
-    <>
-      <style jsx>{`
-        input[type="number"]::-webkit-outer-spin-button,
-        input[type="number"]::-webkit-inner-spin-button {
-          -webkit-appearance: none;
-          margin: 0;
-        }
-        input[type="number"] {
-          -moz-appearance: textfield;
-        }
-      `}</style>
-      <Card className={`${
-        variant === 'carousel' 
-          ? 'min-w-70 h-full bg-gradient-to-br from-slate-800/90 to-slate-700/90 border-slate-600 hover:border-yellow-400/50 transition-all duration-300 shadow-xl flex flex-col' 
-          : 'bg-gradient-to-br from-slate-800/90 to-slate-700/90 border-slate-600 hover:border-yellow-400/50 transition-all duration-300 shadow-xl'
-      }`}>
-        <CardHeader className="pb-2 flex-shrink-0">
-          <div className="aspect-square rounded-lg overflow-hidden mb-2 bg-slate-900/50">
-            <img
-              src={raffle.prize}
-              alt={raffle.title}
-              className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+    <Card className={`bg-slate-800/90 border-slate-700 hover:bg-slate-800 transition-all duration-300 overflow-hidden ${
+      variant === 'carousel' ? 'w-70 flex-shrink-0' : 'w-full'
+    }`}>
+      <CardHeader className="pb-3">
+        <div className="relative">
+          <img 
+            src={raffle.prize} 
+            alt={raffle.title}
+            className="w-full aspect-square object-contain rounded-lg mb-3 bg-slate-700"
+          />
+          <div className="absolute top-2 left-2">
+            <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+              raffle.category === 'NFT' 
+                ? 'bg-purple-500/80 text-white' 
+                : 'bg-yellow-500/80 text-black'
+            }`}>
+              {raffle.category}
+            </span>
+          </div>
+        </div>
+        
+        {timeRemaining !== undefined ? (
+          <div className="flex justify-between items-center mb-1">
+            <p className="text-green-400 font-medium text-xs flex items-center">
+              <Clock className="w-3 h-3 mr-1" />
+              {raffle.status === "ended" ? "Ended" : `Ends in ${displayTimeRemaining > 0 ? formatTimeRemaining(displayTimeRemaining) : "0h 0m 0s"}`}
+            </p>
+            <span className="text-slate-400 text-xs font-medium flex-shrink-0">{raffle.owner}</span>
+          </div>
+        ) : (
+          <div className="flex justify-between items-center mb-1">
+            <p className="text-green-400 font-medium text-xs flex items-center">
+              <Clock className="w-3 h-3 mr-1" />
+              {raffle.status === "ended" ? "Ended" : `Ends ${raffle.timeLeft || "soon"}`}
+            </p>
+            <span className="text-slate-400 text-xs font-medium flex-shrink-0">{raffle.owner}</span>
+          </div>
+        )}
+        
+        <div className="mb-1">
+          <CardTitle className="text-white text-lg font-bold truncate">{raffle.title}</CardTitle>
+        </div>
+        <div className="flex items-center gap-1">
+          <div className="flex-1 bg-slate-700 rounded-full h-1.5 overflow-hidden">
+            <div 
+              className="h-full bg-gradient-to-r from-yellow-400 to-yellow-500 transition-all duration-300"
+              style={{ width: `${(raffle.ticketsSold / raffle.totalTickets) * 100}%` }}
             />
           </div>
-          
-          {variant === 'carousel' ? (
-            <div className="flex justify-between items-center mb-1">
-              <p className="text-green-400 font-medium text-xs flex items-center">
-                <Clock className="w-3 h-3 mr-1" />
-                Ends in {displayTimeRemaining > 0 ? formatTimeRemaining(displayTimeRemaining) : "0h 0m 0s"}
-              </p>
-              <span className="text-slate-400 text-xs font-medium flex-shrink-0">{raffle.owner}</span>
-            </div>
-          ) : (
-            <div className="flex justify-between items-center mb-1">
-              <p className="text-green-400 font-medium text-xs flex items-center">
-                <Clock className="w-3 h-3 mr-1" />
-                Ends {raffle.timeLeft || "soon"}
-              </p>
-              <span className="text-slate-400 text-xs font-medium flex-shrink-0">{raffle.owner}</span>
-            </div>
-          )}
-          
-          <div className="mb-1">
-            <CardTitle className="text-white text-lg font-bold truncate">{raffle.title}</CardTitle>
-          </div>
-          <div className="flex items-center gap-1">
-            <p className="text-slate-300 text-xs font-bold">
-              {raffle.category === 'NFT' ? 'Verified Collection' : 'Verified Token'}
-            </p>
-            <CheckCircle className="w-3 h-3 text-green-400" />
-          </div>
-        </CardHeader>
-      
-        <CardContent className={`${variant === 'carousel' ? 'space-y-4 flex-1 flex flex-col justify-between' : 'space-y-3'}`}>
-          <div className="grid grid-cols-2 gap-2 text-xs">
-            <div>
-              <p className="text-slate-400">Tickets remaining</p>
-              <p className="text-green-400 font-bold min-h-[1.2rem]">{remainingTickets} / {raffle.totalTickets}</p>
-            </div>
-            <div>
-              <p className="text-slate-400">Price per ticket</p>
-              <p className="text-yellow-400 font-bold min-h-[1.2rem]">{raffle.ticketPrice} <span className="text-slate-400">({raffle.usdPrice})</span></p>
-            </div>
-          </div>
+          <span className="text-slate-400 text-xs ml-2 flex-shrink-0">
+            {raffle.totalTickets - raffle.ticketsSold}/{raffle.totalTickets}
+          </span>
+        </div>
+      </CardHeader>
 
-          {showControls && (
-            <div className="flex items-stretch gap-1">
-              {/* Quantity controls container */}
+      <CardContent className="pt-0">
+        <div className="flex justify-between items-start mb-3">
+          <div>
+            <p className="text-slate-400">Tickets remaining</p>
+            <p className="text-white font-bold">{raffle.totalTickets - raffle.ticketsSold} / {raffle.totalTickets}</p>
+          </div>
+          <div>
+            <p className="text-slate-400">Price per ticket</p>
+            <p className="text-yellow-400 font-bold min-h-[1.2rem]">{raffle.ticketPrice} <span className="text-slate-400">({raffle.usdPrice})</span></p>
+          </div>
+        </div>
+
+        {showControls && (
+          <div className="flex items-stretch gap-1">
+            {/* Quantity controls container - only show for active raffles */}
+            {raffle.status !== "ended" && (
               <div className="flex items-center bg-slate-800 rounded-lg border border-slate-600 text-xs h-8 w-32">
                 <button
                   onClick={(e) => {
@@ -199,15 +223,25 @@ export function RaffleCard({
                   Max
                 </button>
               </div>
+            )}
 
-              {/* Buy button */}
-              <Button className="w-28 h-8 bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-500 hover:to-yellow-600 text-black hover:text-white font-semibold text-xs transition-all duration-300 hover:shadow-lg hover:shadow-yellow-400/50 hover:scale-[1.02] overflow-hidden">
-                <span className="truncate">Buy • {((localQuantity) * 0.5).toFixed(1)} APT</span>
+            {/* Buy button or Winner info */}
+            {raffle.status === "ended" ? (
+              <div className="w-full h-8 bg-slate-700 text-slate-300 rounded-lg flex items-center justify-center text-xs font-medium">
+                Winner: @lancepanalo
+              </div>
+            ) : (
+              <Button className={`w-28 h-8 ${
+                currency === "GUI" 
+                  ? "bg-gradient-to-r from-yellow-400 via-cyan-400 to-green-400 hover:from-yellow-300 hover:via-cyan-300 hover:to-green-300" 
+                  : "bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-500 hover:to-yellow-600"
+              } text-black hover:text-white font-semibold text-xs transition-all duration-300 hover:shadow-lg hover:shadow-yellow-400/50 hover:scale-[1.02] overflow-hidden`}>
+                <span className="truncate">Buy • {calculateTotalPrice(localQuantity)}</span>
               </Button>
-            </div>
-          )}
-        </CardContent>
-      </Card>
-    </>
+            )}
+          </div>
+        )}
+      </CardContent>
+    </Card>
   )
 }

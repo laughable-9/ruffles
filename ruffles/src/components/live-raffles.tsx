@@ -20,7 +20,7 @@ const raffles = [
     timeLeft: "1m 17s",
     ticketsSold: 234,
     totalTickets: 500,
-    category: "Token",
+    category: "Token" as const,
     ticketPrice: "0.5 APT",
     usdPrice: "$2.72",
     endTime: Date.now() + (1 * 60 + 17) * 1000, // 1m 17s from now
@@ -33,7 +33,7 @@ const raffles = [
     timeLeft: "6m 17s",
     ticketsSold: 67,
     totalTickets: 150,
-    category: "Token",
+    category: "Token" as const,
     ticketPrice: "0.5 APT",
     usdPrice: "$2.72",
     endTime: Date.now() + (6 * 60 + 17) * 1000, // 6m 17s from now
@@ -46,7 +46,7 @@ const raffles = [
     timeLeft: "16m 17s",
     ticketsSold: 156,
     totalTickets: 300,
-    category: "NFT",
+    category: "NFT" as const,
     ticketPrice: "0.5 APT",
     usdPrice: "$2.72",
     endTime: Date.now() + (16 * 60 + 17) * 1000, // 16m 17s from now
@@ -59,7 +59,7 @@ const raffles = [
     timeLeft: "32m 17s",
     ticketsSold: 847,
     totalTickets: 1000,
-    category: "NFT",
+    category: "NFT" as const,
     ticketPrice: "0.5 APT",
     usdPrice: "$2.72",
     endTime: Date.now() + (32 * 60 + 17) * 1000, // 32m 17s from now
@@ -72,7 +72,7 @@ const raffles = [
     timeLeft: "45m 12s",
     ticketsSold: 89,
     totalTickets: 200,
-    category: "Token",
+    category: "Token" as const,
     ticketPrice: "0.5 APT",
     usdPrice: "$2.72",
     endTime: Date.now() + (45 * 60 + 12) * 1000, // 45m 12s from now
@@ -85,7 +85,7 @@ const raffles = [
     timeLeft: "1h 23m",
     ticketsSold: 45,
     totalTickets: 100,
-    category: "Token",
+    category: "Token" as const,
     ticketPrice: "0.5 APT",
     usdPrice: "$2.72",
     endTime: Date.now() + (1 * 3600 + 23 * 60) * 1000, // 1h 23m from now
@@ -98,7 +98,7 @@ const raffles = [
     timeLeft: "2h 15m",
     ticketsSold: 123,
     totalTickets: 300,
-    category: "NFT",
+    category: "NFT" as const,
     ticketPrice: "0.5 APT",
     usdPrice: "$2.72",
     endTime: Date.now() + (2 * 3600 + 15 * 60) * 1000, // 2h 15m from now
@@ -111,7 +111,7 @@ const raffles = [
     timeLeft: "3h 45m",
     ticketsSold: 78,
     totalTickets: 150,
-    category: "NFT",
+    category: "NFT" as const,
     ticketPrice: "0.5 APT",
     usdPrice: "$2.72",
     endTime: Date.now() + (3 * 3600 + 45 * 60) * 1000, // 3h 45m from now
@@ -124,7 +124,7 @@ const raffles = [
     timeLeft: "4h 30m",
     ticketsSold: 234,
     totalTickets: 500,
-    category: "NFT",
+    category: "NFT" as const,
     ticketPrice: "0.5 APT",
     usdPrice: "$2.72",
     endTime: Date.now() + (4 * 3600 + 30 * 60) * 1000, // 4h 30m from now
@@ -137,7 +137,7 @@ const raffles = [
     timeLeft: "5h 12m",
     ticketsSold: 156,
     totalTickets: 250,
-    category: "Token",
+    category: "Token" as const,
     ticketPrice: "0.5 APT",
     usdPrice: "$2.72",
     endTime: Date.now() + (5 * 3600 + 12 * 60) * 1000, // 5h 12m from now
@@ -151,6 +151,23 @@ export function LiveRaffles() {
   const [isAutoPlaying, setIsAutoPlaying] = useState(true)
   const [userInteractionTimeout, setUserInteractionTimeout] = useState<NodeJS.Timeout | null>(null)
   const [currentTime, setCurrentTime] = useState(Date.now())
+  const [currency, setCurrency] = useState<"APT" | "GUI">("APT")
+
+  // Currency conversion function
+  const convertPrice = (aptPrice: string, targetCurrency: "APT" | "GUI") => {
+    const aptValue = parseFloat(aptPrice.replace(" APT", ""))
+    if (targetCurrency === "GUI") {
+      // 0.5 APT = 681K GUI, so 1 APT = 1362K GUI
+      const guiValue = aptValue * 1362000
+      if (guiValue >= 1000000) {
+        return `${(guiValue / 1000000).toFixed(0)}M GUI`
+      } else if (guiValue >= 1000) {
+        return `${(guiValue / 1000).toFixed(0)}K GUI`
+      }
+      return `${guiValue.toFixed(0)} GUI`
+    }
+    return `${aptValue} APT`
+  }
 
   // Update current time every second for countdown
   useEffect(() => {
@@ -247,8 +264,32 @@ export function LiveRaffles() {
       data-section="live-raffles"
     >
       <div className="container mx-auto">
-        <div className="text-left mb-6">
-          <h2 className="text-3xl font-bold text-white mb-4">Raffles Ending Soon</h2>
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-3xl font-bold text-white">Raffles Ending Soon</h2>
+          
+          {/* Currency Toggle */}
+          <div className="flex bg-slate-800 rounded-lg p-1">
+            <button
+              onClick={() => setCurrency('APT')}
+              className={`px-4 py-2 rounded-md font-medium transition-all ${
+                currency === 'APT'
+                  ? 'bg-gradient-to-r from-yellow-500 to-yellow-600 text-white shadow-lg'
+                  : 'text-gray-400 hover:text-white'
+              }`}
+            >
+              $APT
+            </button>
+            <button
+              onClick={() => setCurrency('GUI')}
+              className={`px-4 py-2 rounded-md font-medium transition-all ${
+                currency === 'GUI'
+                  ? 'bg-gradient-to-r from-yellow-400 via-cyan-400 to-green-400 text-white shadow-lg'
+                  : 'text-gray-400 hover:text-white'
+              }`}
+            >
+              $GUI
+            </button>
+          </div>
         </div>
 
         <div className="relative flex items-center justify-center">
@@ -278,15 +319,22 @@ export function LiveRaffles() {
                 const timeRemaining = Math.max(0, Math.floor((raffle.endTime - currentTime) / 1000))
                 const currentQuantity = ticketQuantities[raffle.id] || 0
                 
+                // Convert the raffle data based on selected currency
+                const convertedRaffle = {
+                  ...raffle,
+                  ticketPrice: convertPrice(raffle.ticketPrice, currency)
+                }
+                
                 return (
                   <RaffleCard
                     key={`${raffle.id}-${index}`}
-                    raffle={raffle}
+                    raffle={convertedRaffle}
                     variant="carousel"
                     showControls={true}
                     onQuantityChange={handleQuantityChange}
                     currentQuantity={currentQuantity}
                     timeRemaining={timeRemaining}
+                    currency={currency}
                   />
                 )
               })}

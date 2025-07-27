@@ -7,31 +7,26 @@ const steps = [
     icon: Rocket,
     title: "Launch",
     description: "Create your raffle or auction with custom parameters",
-    color: "from-yellow-500 to-yellow-600",
   },
   {
     icon: Lock,
     title: "Vault Prize",
     description: "Smart contract securely holds prizes until draw completion",
-    color: "from-cyan-500 to-cyan-600",
   },
   {
     icon: CreditCard,
-    title: "Buy with $GUI",
-    description: "Participants purchase tickets using $GUI tokens",
-    color: "from-green-500 to-green-600",
+    title: "Enter with $APT or $GUI",
+    description: "Participants purchase tickets using $APT or $GUI tokens",
   },
   {
     icon: Shuffle,
     title: "Verifiable Draw",
     description: "Provably fair random selection using blockchain entropy",
-    color: "from-purple-500 to-purple-600",
   },
   {
     icon: Trophy,
     title: "Claim or Withdraw",
     description: "Winners claim prizes, others get refunds automatically",
-    color: "from-pink-500 to-pink-600",
   },
 ]
 
@@ -49,13 +44,16 @@ export function HowItWorks() {
 
           <div className="flex justify-center gap-4 flex-wrap">
             {features.map((feature, index) => (
-              <Badge
+              <div
                 key={index}
-                variant="secondary"
-                className="bg-gradient-to-r from-cyan-500/20 to-green-500/20 text-cyan-400 border border-cyan-500/30 px-4 py-2 text-sm font-semibold"
+                className="relative p-[2px] rounded-full bg-gradient-to-r from-yellow-400 via-cyan-400 to-green-400"
               >
-                {feature}
-              </Badge>
+                <div className="bg-slate-800 rounded-full px-4 py-2">
+                  <span className="bg-gradient-to-r from-yellow-400 via-cyan-400 to-green-400 bg-clip-text text-transparent text-sm font-semibold">
+                    {feature}
+                  </span>
+                </div>
+              </div>
             ))}
           </div>
         </div>
@@ -65,9 +63,7 @@ export function HowItWorks() {
             <div key={index} className="relative">
               <Card className="bg-slate-800/50 border-slate-700 hover:border-cyan-500/50 transition-all duration-300 h-full">
                 <CardContent className="p-6 text-center space-y-4">
-                  <div
-                    className={`w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br ${step.color} flex items-center justify-center mb-4`}
-                  >
+                  <div className="w-16 h-16 mx-auto rounded-2xl flex items-center justify-center mb-4">
                     <step.icon className="w-8 h-8 text-white" />
                   </div>
 
@@ -80,8 +76,10 @@ export function HowItWorks() {
 
               {/* Arrow connector */}
               {index < steps.length - 1 && (
-                <div className="hidden lg:block absolute top-1/2 -right-4 transform -translate-y-1/2 text-cyan-400 text-2xl">
-                  →
+                <div className="hidden lg:flex absolute top-1/2 -right-4 transform -translate-y-1/2 items-center justify-center w-8 h-8">
+                  <span className="text-2xl font-bold bg-gradient-to-r from-yellow-400 via-cyan-400 to-green-400 bg-clip-text text-transparent">
+                    →
+                  </span>
                 </div>
               )}
             </div>

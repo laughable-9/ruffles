@@ -16,7 +16,8 @@ const raffles = [
     category: "Token" as const,
     ticketPrice: "0.5 APT",
     usdPrice: "$2.72",
-    owner: "@lancebading"
+    owner: "@lancebading",
+    status: "active" as const
   },
   {
     id: 2,
@@ -28,7 +29,8 @@ const raffles = [
     category: "Token" as const,
     ticketPrice: "0.5 APT",
     usdPrice: "$2.72",
-    owner: "@lancebading"
+    owner: "@lancebading",
+    status: "active" as const
   },
   {
     id: 3,
@@ -40,7 +42,8 @@ const raffles = [
     category: "NFT" as const,
     ticketPrice: "0.5 APT",
     usdPrice: "$2.72",
-    owner: "@lancebading"
+    owner: "@lancebading",
+    status: "active" as const
   },
   {
     id: 4,
@@ -52,7 +55,8 @@ const raffles = [
     category: "NFT" as const,
     ticketPrice: "0.5 APT",
     usdPrice: "$2.72",
-    owner: "@lancebading"
+    owner: "@lancebading",
+    status: "active" as const
   },
   {
     id: 5,
@@ -64,19 +68,21 @@ const raffles = [
     category: "Token" as const,
     ticketPrice: "0.5 APT",
     usdPrice: "$2.72",
-    owner: "@lancebading"
+    owner: "@lancebading",
+    status: "active" as const
   },
   {
     id: 6,
     title: "15 $APT",
     prize: "/token-2.png",
-    timeLeft: "1h 23m",
-    ticketsSold: 45,
+    timeLeft: "Ended",
+    ticketsSold: 100,
     totalTickets: 100,
     category: "Token" as const,
     ticketPrice: "0.5 APT",
     usdPrice: "$2.72",
-    owner: "@lancebading"
+    owner: "@lancebading",
+    status: "ended" as const
   },
   {
     id: 7,
@@ -88,19 +94,21 @@ const raffles = [
     category: "NFT" as const,
     ticketPrice: "0.5 APT",
     usdPrice: "$2.72",
-    owner: "@lancebading"
+    owner: "@lancebading",
+    status: "active" as const
   },
   {
     id: 8,
     title: "Spooks",
     prize: "/spooks-1.png",
-    timeLeft: "3h 45m",
-    ticketsSold: 78,
+    timeLeft: "Ended",
+    ticketsSold: 150,
     totalTickets: 150,
     category: "NFT" as const,
     ticketPrice: "0.5 APT",
     usdPrice: "$2.72",
-    owner: "@lancebading"
+    owner: "@lancebading",
+    status: "ended" as const
   },
   {
     id: 9,
@@ -112,19 +120,21 @@ const raffles = [
     category: "NFT" as const,
     ticketPrice: "0.5 APT",
     usdPrice: "$2.72",
-    owner: "@lancebading"
+    owner: "@lancebading",
+    status: "active" as const
   },
   {
     id: 10,
     title: "25M $GUI",
     prize: "/token-1.jpg",
-    timeLeft: "5h 12m",
-    ticketsSold: 156,
+    timeLeft: "Ended",
+    ticketsSold: 250,
     totalTickets: 250,
     category: "Token" as const,
     ticketPrice: "0.5 APT",
     usdPrice: "$2.72",
-    owner: "@lancebading"
+    owner: "@lancebading",
+    status: "ended" as const
   },
   {
     id: 11,
@@ -136,7 +146,8 @@ const raffles = [
     category: "Token" as const,
     ticketPrice: "0.5 APT",
     usdPrice: "$2.72",
-    owner: "@lancebading"
+    owner: "@lancebading",
+    status: "active" as const
   },
   {
     id: 12,
@@ -148,7 +159,8 @@ const raffles = [
     category: "NFT" as const,
     ticketPrice: "0.5 APT",
     usdPrice: "$2.72",
-    owner: "@lancebading"
+    owner: "@lancebading",
+    status: "active" as const
   },
   {
     id: 13,
@@ -160,7 +172,8 @@ const raffles = [
     category: "Token" as const,
     ticketPrice: "0.5 APT",
     usdPrice: "$2.72",
-    owner: "@lancebading"
+    owner: "@lancebading",
+    status: "active" as const
   },
   {
     id: 14,
@@ -222,7 +235,7 @@ const raffles = [
     usdPrice: "$2.72",
     owner: "@lancebading"
   },
-  // Additional raffles for pagination (19-50)
+// ...existing code...
   {
     id: 19,
     title: "GUI Gang",
@@ -517,74 +530,113 @@ const raffles = [
 export function MainRaffles() {
   const [activeTab, setActiveTab] = useState("All Raffles")
   const [searchQuery, setSearchQuery] = useState("")
-  const [ticketQuantities, setTicketQuantities] = useState<{[key: number]: number}>({})
+  const [ticketQuantities, setTicketQuantities] = useState<{ [key: number]: number }>({})
   const [currentPage, setCurrentPage] = useState(1)
   const [showScrollToTop, setShowScrollToTop] = useState(false)
+  const [currency, setCurrency] = useState<"APT" | "GUI">("APT")
 
   const RAFFLES_PER_PAGE = 12
-  const TOTAL_PAGES = Math.ceil(raffles.length / RAFFLES_PER_PAGE)
-
-  // Get raffles for current page
-  const getCurrentPageRaffles = () => {
-    const startIndex = (currentPage - 1) * RAFFLES_PER_PAGE
-    const endIndex = startIndex + RAFFLES_PER_PAGE
-    return raffles.slice(startIndex, endIndex)
+  
+  // Get filtered raffles based on tab
+  const getFilteredRafflesByTab = () => {
+    if (activeTab === "Past Raffles") {
+      return raffles.filter(raffle => raffle.status === "ended");
+    } else {
+      return raffles.filter(raffle => raffle.status !== "ended");
+    }
   }
+
+  const TOTAL_PAGES = Math.ceil(getFilteredRafflesByTab().length / RAFFLES_PER_PAGE)
+
+  // Currency conversion function
+  const convertPrice = (aptPrice: string, targetCurrency: "APT" | "GUI") => {
+    const aptValue = parseFloat(aptPrice)
+    if (targetCurrency === "GUI") {
+      // 0.5 APT = 681K GUI, so 1 APT = 1362K GUI
+      const guiValue = aptValue * 1362000
+      if (guiValue >= 1000000) {
+        return `${(guiValue / 1000000).toFixed(0)}M GUI`
+      } else if (guiValue >= 1000) {
+        return `${(guiValue / 1000).toFixed(0)}K GUI`
+      }
+      return `${guiValue.toFixed(0)} GUI`
+    }
+    return `${aptValue} APT`
+  }
+
+  // Get raffles for current page with converted prices
+  const getCurrentPageRaffles = () => {
+    const startIndex = (currentPage - 1) * RAFFLES_PER_PAGE;
+    const endIndex = startIndex + RAFFLES_PER_PAGE;
+    
+    // Filter by tab first
+    const filteredRaffles = getFilteredRafflesByTab();
+    
+    return filteredRaffles.slice(startIndex, endIndex).map(raffle => ({
+      ...raffle,
+      ticketPrice: convertPrice(raffle.ticketPrice.replace(" APT", ""), currency)
+    }));
+  } 
 
   // Filter raffles based on search
   const getFilteredRaffles = () => {
-    const currentPageRaffles = getCurrentPageRaffles()
-    if (!searchQuery) return currentPageRaffles
-    
-    return currentPageRaffles.filter(raffle => 
+    const currentPageRaffles = getCurrentPageRaffles();
+    if (!searchQuery) return currentPageRaffles;
+    return currentPageRaffles.filter(raffle =>
       raffle.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       raffle.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
       raffle.owner.toLowerCase().includes(searchQuery.toLowerCase())
-    )
+    );
   }
 
   // Handle page change
   const changePage = (newPage: number) => {
-    setCurrentPage(newPage)
-    
-    // Small delay to ensure state updates before scrolling
+    setCurrentPage(newPage);
     setTimeout(() => {
-      // Scroll to the top of the main raffles section
-      const mainRafflesSection = document.querySelector('[data-section="main-raffles"]')
+      const mainRafflesSection = document.querySelector('[data-section="main-raffles"]');
       if (mainRafflesSection) {
-        mainRafflesSection.scrollIntoView({ behavior: 'smooth' })
+        mainRafflesSection.scrollIntoView({ behavior: 'smooth' });
       } else {
-        window.scrollTo({ top: 0, behavior: 'smooth' })
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       }
-    }, 100)
+    }, 100);
+  }
+
+  // Handle tab change
+  const handleTabChange = (tab: string) => {
+    setActiveTab(tab);
+    setCurrentPage(1); // Reset to first page when switching tabs
   }
 
   // Scroll to top function
   const scrollToTop = () => {
-    // Scroll to the top of the main raffles section
-    const mainRafflesSection = document.querySelector('[data-section="main-raffles"]')
+    const mainRafflesSection = document.querySelector('[data-section="main-raffles"]');
     if (mainRafflesSection) {
-      mainRafflesSection.scrollIntoView({ behavior: 'smooth' })
+      mainRafflesSection.scrollIntoView({ behavior: 'smooth' });
     } else {
-      window.scrollTo({ top: 0, behavior: 'smooth' })
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }
 
   // Check scroll position for jump to top button
   useEffect(() => {
     const handleScroll = () => {
-      // Show button when scrolled past the main-raffles section header
-      const mainRafflesSection = document.querySelector('[data-section="main-raffles"]')
+      const mainRafflesSection = document.querySelector('[data-section="main-raffles"]');
       if (mainRafflesSection) {
-        const rect = mainRafflesSection.getBoundingClientRect()
-        const isPassedMainRaffles = rect.top < -100 // Show when scrolled 100px past the top
-        setShowScrollToTop(isPassedMainRaffles)
+        const rect = mainRafflesSection.getBoundingClientRect();
+        const isPassedMainRaffles = rect.top < -100;
+        setShowScrollToTop(isPassedMainRaffles);
       }
     }
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+  // ...existing code...
+
+  // ...existing code...
+
+  // ...existing code...
 
   const handleQuantityChange = (id: number, quantity: number) => {
     setTicketQuantities(prev => ({
@@ -603,27 +655,52 @@ export function MainRaffles() {
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-4">
             <button
-              onClick={() => setActiveTab("All Raffles")}
-              className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${
-                activeTab === "All Raffles" 
-                  ? "bg-white/20 text-white border border-white/30" 
+              onClick={() => handleTabChange("All Raffles")}
+              className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${activeTab === "All Raffles"
+                  ? "bg-white/20 text-white border border-white/30"
                   : "text-slate-400 hover:text-white"
-              }`}
+                }`}
             >
               All Raffles
             </button>
             <button
-              onClick={() => setActiveTab("Past Raffles")}
-              className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${
-                activeTab === "Past Raffles" 
-                  ? "bg-white/20 text-white border border-white/30" 
+              onClick={() => handleTabChange("Past Raffles")}
+              className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${activeTab === "Past Raffles"
+                  ? "bg-white/20 text-white border border-white/30"
                   : "text-slate-400 hover:text-white"
-              }`}
+                }`}
             >
               Past Raffles
             </button>
+            
+            {/* Currency Switch */}
+            <div className="flex items-center gap-2 ml-4">
+              <span className="text-slate-400 text-sm">Currency:</span>
+              <div className="flex bg-slate-800/50 border border-slate-600 rounded-full p-1">
+                <button
+                  onClick={() => setCurrency("APT")}
+                  className={`px-4 py-1 rounded-full text-sm font-medium transition-all ${
+                    currency === "APT"
+                      ? "bg-gradient-to-r from-yellow-400 to-yellow-500 text-black"
+                      : "text-slate-400 hover:text-white"
+                  }`}
+                >
+                  $APT
+                </button>
+                <button
+                  onClick={() => setCurrency("GUI")}
+                  className={`px-4 py-1 rounded-full text-sm font-medium transition-all ${
+                    currency === "GUI"
+                      ? "bg-gradient-to-r from-yellow-400 via-cyan-400 to-green-400 text-black"
+                      : "text-slate-400 hover:text-white"
+                  }`}
+                >
+                  $GUI
+                </button>
+              </div>
+            </div>
           </div>
-          
+
           <div className="flex items-center gap-4">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400" />
@@ -652,6 +729,7 @@ export function MainRaffles() {
               showControls={true}
               onQuantityChange={handleQuantityChange}
               currentQuantity={ticketQuantities[raffle.id] || 0}
+              currency={currency}
             />
           ))}
         </div>
@@ -662,11 +740,10 @@ export function MainRaffles() {
             <button
               onClick={() => changePage(currentPage - 1)}
               disabled={currentPage === 1}
-              className={`flex items-center gap-2 px-4 py-2 rounded-full transition-colors ${
-                currentPage === 1
+              className={`flex items-center gap-2 px-4 py-2 rounded-full transition-colors ${currentPage === 1
                   ? 'text-slate-500 cursor-not-allowed'
                   : 'text-white hover:bg-slate-700'
-              }`}
+                }`}
             >
               <ChevronLeft className="w-4 h-4" />
               Previous
@@ -677,11 +754,10 @@ export function MainRaffles() {
                 <button
                   key={page}
                   onClick={() => changePage(page)}
-                  className={`w-10 h-10 rounded-full transition-colors ${
-                    currentPage === page
+                  className={`w-10 h-10 rounded-full transition-colors ${currentPage === page
                       ? 'bg-white/20 text-white border border-white/30'
                       : 'text-slate-400 hover:text-white hover:bg-slate-700'
-                  }`}
+                    }`}
                 >
                   {page}
                 </button>
@@ -691,11 +767,10 @@ export function MainRaffles() {
             <button
               onClick={() => changePage(currentPage + 1)}
               disabled={currentPage === TOTAL_PAGES}
-              className={`flex items-center gap-2 px-4 py-2 rounded-full transition-colors ${
-                currentPage === TOTAL_PAGES
+              className={`flex items-center gap-2 px-4 py-2 rounded-full transition-colors ${currentPage === TOTAL_PAGES
                   ? 'text-slate-500 cursor-not-allowed'
                   : 'text-white hover:bg-slate-700'
-              }`}
+                }`}
             >
               Next
               <ChevronRight className="w-4 h-4" />
@@ -705,7 +780,7 @@ export function MainRaffles() {
 
         {/* Results info */}
         <div className="text-center mt-4 text-slate-400 text-sm">
-          Showing {displayedRafflesList.length} of {raffles.length} raffles 
+          Showing {displayedRafflesList.length} of {getFilteredRafflesByTab().length} raffles
           {showPagination && ` (Page ${currentPage} of ${TOTAL_PAGES})`}
         </div>
 

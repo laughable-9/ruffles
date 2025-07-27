@@ -26,7 +26,6 @@ export function Header() {
         </div>
         <nav className="flex items-center gap-6">
           <a href="#" className="text-lg font-semibold text-white hover:text-slate-300 transition-colors">Raffles</a>
-          <a href="#" className="text-lg font-semibold text-white hover:text-slate-300 transition-colors">Statistics</a>
         </nav>
       </div>
       <button

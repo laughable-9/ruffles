@@ -1,10 +1,7 @@
 import { Hero } from "@/components/hero"
 import { LiveRaffles } from "@/components/live-raffles"
 import { MainRaffles } from "@/components/main-raffles"
-import { CoreModules } from "@/components/core-modules"
 import { HowItWorks } from "@/components/how-it-works"
-import { StatsAndCommunity } from "@/components/stats-and-community"
-import { TokenUtility } from "@/components/token-utility"
 import { Footer } from "@/components/footer"
 
 export default function Home() {
@@ -14,9 +11,6 @@ export default function Home() {
       <LiveRaffles />
       <HowItWorks />
       <MainRaffles />
-      <CoreModules />
-      <StatsAndCommunity />
-      <TokenUtility />
       <Footer />
     </div>
   )
