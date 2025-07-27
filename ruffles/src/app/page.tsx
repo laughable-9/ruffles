@@ -2,6 +2,7 @@ import { Hero } from "@/components/hero"
 import { LiveRaffles } from "@/components/live-raffles"
 import { MainRaffles } from "@/components/main-raffles"
 import { HowItWorks } from "@/components/how-it-works"
+import { CreateRaffleSection } from "@/components/create-raffle-section"
 import { Footer } from "@/components/footer"
 
 export default function Home() {
@@ -10,6 +11,7 @@ export default function Home() {
       <Hero />
       <LiveRaffles />
       <HowItWorks />
+      <CreateRaffleSection />
       <MainRaffles />
       <Footer />
     </div>
