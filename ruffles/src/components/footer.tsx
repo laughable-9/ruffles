@@ -31,7 +31,9 @@ export function Footer() {
             <h4 className="text-white font-semibold">Resources</h4>
             <div className="space-y-2">
               <a
-                href="#"
+                href="https://ruffles.gitbook.io/docs/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex items-center gap-2 text-slate-400 hover:text-cyan-400 text-sm transition-colors"
               >
                 <FileText className="w-4 h-4" />

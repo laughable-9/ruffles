@@ -9,6 +9,10 @@
 
 ## 🌟 Overview
 
+Welcome to **Ruffles**, where on-chain raffles become fun, fair, and frictionless.
+
+Raffles have long been a crowd favorite, in gaming, fundraising, and collectibles. In Web3, they've become even more powerful: engaging communities, rewarding supporters, and offering projects a way to fund and hype - fast.
+
 ### Why Raffles on Aptos?
 
 Raffles have become popular in Web3, but traditional platforms come with significant problems:
@@ -37,10 +41,6 @@ Our flagship feature - a no-code way to create trustless raffles for NFTs or tok
 3. **Draw** - Verifiable Random Function selects winner with public proof
 4. **Settle** - Automatic prize distribution and fee collection
 
-- 90% revenue to creators
-- 10% platform fee (portion burned for $GUI deflation)
-- Transparent, auditable draws
-
 ## 🛠️ Tech Stack
 
 - **Frontend**: Next.js 14 with App Router
@@ -50,36 +50,12 @@ Our flagship feature - a no-code way to create trustless raffles for NFTs or tok
 - **Smart Contracts**: Move language
 - **Randomness**: Verifiable Random Functions (VRF)
 
-## 🎮 User Experience
-
-### For Creators
-
-- **No-code raffle creation**
-- **Automated prize custody**
-- **90% revenue share**
-- **Real-time analytics**
-- **Community page customization**
-
-### For Participants
-
-- **Transparent odds**
-- **Instant ticket purchases**
-- **Verifiable fairness**
-- **Automatic prize distribution**
-- **Mobile-optimized experience**
-
 ## 🔗 Links
 
 - **Website**: [ruffles.app](https://ruffles.app) _(coming soon)_
-- **Documentation**: [docs.ruffles.app](https://docs.ruffles.app) _(coming soon)_
+- **Documentation**: [ruffles.gitbook.io/docs/](https://ruffles.gitbook.io/docs/)
 - **Twitter**: [@RufflesOnAptos](https://twitter.com/RufflesOnAptos) _(coming soon)_
 - **Discord**: [Join our community](https://discord.gg/ruffles) _(coming soon)_
-
-## 🙏 Acknowledgments
-
-- Built with ❤️ for the Aptos ecosystem
-- Powered by Aptos blockchain technology
-- Inspired by the need for trustless Web3 experiences
 
 ---
 
