@@ -5,7 +5,7 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
 
-> **Trustless, instant, and fair on-chain raffles, auctions, and giveaways powered by Aptos blockchain.**
+> **Trustless, instant, and fair on-chain raffles powered by Aptos blockchain.**
 
 ## 🌟 Overview
 
@@ -41,18 +41,6 @@ Our flagship feature - a no-code way to create trustless raffles for NFTs or tok
 - 10% platform fee (portion burned for $GUI deflation)
 - Transparent, auditable draws
 
-### 🔨 Auctions
-
-Perfect for hard-to-price assets like digital art and unique NFTs.
-
-**Features:**
-
-- Reserve price protection
-- Anti-snipe extensions
-- Real-time bidding
-- Automatic refunds for outbid participants
-- 3% platform fee, 97% to sellers
-
 ## 🛠️ Tech Stack
 
 - **Frontend**: Next.js 14 with App Router
@@ -79,23 +67,6 @@ Perfect for hard-to-price assets like digital art and unique NFTs.
 - **Verifiable fairness**
 - **Automatic prize distribution**
 - **Mobile-optimized experience**
-
-## 💰 Revenue Model
-
-| Service     | Fee                 | Revenue Distribution           |
-| ----------- | ------------------- | ------------------------------ |
-| Raffles     | 10%                 | 90% to creator, portion burned |
-| Auctions    | 3%                  | 97% to seller                  |
-| Giveaways   | Tiered subscription | $100 USDC/month for Pro        |
-| Treat Boxes | Variable            | Based on box type              |
-
-## 🔮 Upcoming Features
-
-- **🏆 Leaderboards** - Top organizers and luckiest winners
-- **🎖️ Reward Points** - Earn through participation
-- **🌟 Tiered Benefits** - Discounts and exclusive access
-- **📊 Advanced Analytics** - Detailed performance metrics
-- **🤝 Launchpad Integration** - Direct whitelist management
 
 ## 🔗 Links
 
